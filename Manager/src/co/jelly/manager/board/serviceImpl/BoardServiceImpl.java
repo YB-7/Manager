@@ -66,7 +66,7 @@ public class BoardServiceImpl implements BoardService {
 
 	private void updateHit(String boardid) {
 		// TODO 조회수 증가
-		String sql = "update board set hit = hit + 1 where id = ?";
+		String sql = "update board set hit = hit + 1 where boardid = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, boardid);
@@ -78,20 +78,50 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int boardInsert(BoardVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		int n = 0;
+		String sql = "insert into board(boardid,writer,title,subject) values (?,?,?,?)";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getBoardid());
+			psmt.setString(2, vo.getWriter());
+			psmt.setString(3, vo.getTitle());
+			psmt.setString(4, vo.getSubject());
+			n = psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return n;
 	}
 
 	@Override
 	public int boardDelete(BoardVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO 글 삭제
+		String sql = "delete from board where boardid = ?";
+		int n = 0;
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getBoardid());
+			n = psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return n;
 	}
 
 	@Override
 	public int boardUpdate(BoardVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO 글 수정
+		int n = 0;
+		String sql = "update board set subject = ? where boardid = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getSubject());
+			psmt.setString(2, vo.getBoardid());
+			n = psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return n;
 	}
 
 }

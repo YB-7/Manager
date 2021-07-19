@@ -78,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 				vo.setName(rs.getString("name"));
 				vo.setAuthor(rs.getString("author"));
 			}
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return vo;
@@ -92,14 +92,34 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int memberDelete(MemberVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO 멤버 삭제
+		int n = 0;
+		String sql = "delete from member where id = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getId());
+			n = psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return n;
 	}
 
 	@Override
 	public int memberUpdate(MemberVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO 정보 수정(주소와 전화번호만 수정가능)
+		int n = 0;
+		String sql = "update member set address = ?, tel = ? where id = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getAddress());
+			psmt.setString(2, vo.getTel());
+			psmt.setString(3, vo.getId());
+			n = psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return n;
 	}
 
 }
